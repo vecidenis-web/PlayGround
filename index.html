@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#182735">
+<title>Ducktective: The Moonberry Mystery</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Press+Start+2P&display=swap');
+:root{--ink:#17232c;--shell:#e8e4d7;--shell-hi:#f7f3e8;--edge:#aaa99f;--lime:#c8f36a;--coral:#ff796b;--blue:#8de1e0;--screen:#172a2e;--gold:#ffcf74}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 12%,#35545b 0,#223940 30%,#15252d 76%);color:#eaf1dd;font-family:'DM Mono',monospace;display:flex;justify-content:center;align-items:flex-start;padding:24px 16px 38px;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;background-image:radial-gradient(#d5ffcf .6px,transparent .6px);background-size:5px 5px}
+.app{width:min(100%,1040px);position:relative}.mast{display:flex;align-items:center;justify-content:space-between;margin:0 10px 12px;color:#c5d6c9;font-size:11px;letter-spacing:.13em;text-transform:uppercase}.brand{display:flex;gap:10px;align-items:center}.brand-mark{background:var(--lime);color:#20312d;width:27px;height:27px;display:grid;place-items:center;border-radius:8px;font-size:18px;box-shadow:0 3px #718e4f}.brand strong{font-family:'Press Start 2P',monospace;font-size:11px;color:#f6f2dd;letter-spacing:0}.online{display:flex;align-items:center;gap:8px}.dot{width:7px;height:7px;border-radius:50%;background:#c8f36a;box-shadow:0 0 12px #c8f36a}
+.console{background:linear-gradient(145deg,#f6f2e8,#d4d1c5);border:1px solid #fff9;border-radius:32px;padding:18px 22px 22px;box-shadow:0 25px 55px #071317aa, inset 0 2px #fff, inset 0 -4px #b6b5aa;position:relative}.top-bezel{background:#282f32;padding:13px 15px 19px;border-radius:20px;box-shadow:inset 0 2px 7px #000b,0 2px #fff5;position:relative}.bezel-row{height:20px;display:flex;align-items:center;justify-content:center;position:relative;color:#9daaa4;font-size:9px;letter-spacing:.2em;text-transform:uppercase}.camera{position:absolute;left:8px;width:7px;height:7px;border-radius:50%;background:#111c23;box-shadow:inset 0 0 0 2px #52666a}.speaker{position:absolute;right:9px;letter-spacing:2px;color:#657276}.game-frame{position:relative;border:4px solid #0e1719;border-radius:5px;overflow:hidden;background:#5d8a69;aspect-ratio:16/9;box-shadow:0 0 0 1px #536164;image-rendering:pixelated}.game-frame canvas{display:block;width:100%;height:100%;image-rendering:pixelated;cursor:crosshair}.screen-overlay{position:absolute;inset:0;pointer-events:none}.hud-top{position:absolute;left:10px;right:10px;top:8px;display:flex;justify-content:space-between;align-items:flex-start}.case-pill,.clock-pill{font-size:9px;background:#172a2bd9;border:1px solid #d5efbf66;color:#edebcc;padding:6px 8px;box-shadow:2px 2px #19262066}.case-pill b{color:var(--lime);font-weight:500}.clock-pill{color:#d8e6d2}.toast{position:absolute;left:50%;top:46px;transform:translateX(-50%);background:#fff1ce;color:#263a36;padding:8px 13px;border:2px solid #273c34;box-shadow:3px 3px #1c2a2c;font-size:11px;white-space:nowrap;opacity:0;transition:opacity .2s}.toast.show{opacity:1}.world-label{position:absolute;bottom:8px;left:9px;background:#182829d9;color:#eff4d9;padding:5px 7px;font-size:9px;letter-spacing:.08em}.hint{position:absolute;bottom:8px;right:9px;background:#182829d9;color:#c9efa1;padding:5px 7px;font-size:9px}
+.branding{height:27px;display:flex;justify-content:center;align-items:center;gap:10px;color:#747970;font-size:8px;text-transform:uppercase;letter-spacing:.16em}.hinge{height:9px;margin:0 -22px 13px;background:linear-gradient(#bbbcb5,#f4f0e5 42%,#c2c1b6);border-top:1px solid #a9aaa2;border-bottom:1px solid #fff;box-shadow:0 2px 3px #8883}
+.lower{display:grid;grid-template-columns:104px minmax(0,1fr) 150px;gap:15px;align-items:center}.pad-side{display:flex;flex-direction:column;align-items:center;gap:14px}.stick{width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 38% 30%,#555b59,#22292a 70%);box-shadow:inset 0 2px 5px #000b,0 2px #fff,0 4px #aaa99f;position:relative}.stick:after{content:"";position:absolute;inset:13px;border-radius:50%;background:linear-gradient(145deg,#6e7770,#343b39);box-shadow:0 2px 4px #111,inset 0 1px 2px #aab4aa}.select-row{display:flex;gap:13px}.tiny-btn{border:0;background:#555b56;color:#f4eedc;border-radius:10px 10px 13px 13px;padding:5px 8px;font:7px 'DM Mono';box-shadow:0 2px #252a29,0 4px #aaa99f;cursor:pointer}.tiny-btn:active{transform:translateY(2px);box-shadow:0 1px #252a29}
+.touch-bezel{background:#2b3030;border-radius:15px;padding:10px;box-shadow:inset 0 2px 5px #000b,0 2px #fff7}.touch-screen{background:#b4d99e;min-height:196px;border:3px solid #182321;border-radius:5px;color:#243b35;padding:12px 14px;position:relative;overflow:hidden}.touch-screen:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#d9e8b6aa,#9bcead44);pointer-events:none}.touch-content{position:relative;z-index:1}.touch-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #526d5555;padding-bottom:8px;margin-bottom:9px}.touch-title{font-family:'Press Start 2P';font-size:9px;line-height:1.6;color:#263b32}.touch-kicker{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#4b6a51}.touch-body{font-size:10px;line-height:1.6;min-height:73px}.objective{display:flex;gap:8px;align-items:flex-start}.badge{width:20px;height:20px;background:#315a47;color:#eaffbd;display:grid;place-items:center;font-size:11px;flex:none;border-radius:4px}.clues{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.clue{font-size:8px;background:#e4f0c2;border:1px solid #77936a;padding:4px 6px;border-radius:2px;color:#36533c}.clue.empty{opacity:.55}.touch-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}.touch-action{background:#345947;color:#eff6cb;border:0;border-bottom:3px solid #233d31;border-radius:4px;padding:7px 9px;font:9px 'DM Mono';cursor:pointer}.touch-action:hover{background:#426d54}.touch-action:active{transform:translateY(2px);border-bottom-width:1px}.touch-action.alt{background:#a75748;border-color:#783c36}.touch-action:disabled{opacity:.45;cursor:not-allowed}.touch-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:8px;color:#50664e}.battery{width:17px;height:8px;border:1px solid #49624f;padding:1px;display:inline-block;margin-left:4px}.battery i{height:100%;width:80%;background:#49624f;display:block}
+.buttons{display:grid;grid-template-columns:repeat(3,38px);grid-template-rows:repeat(3,38px);gap:1px;justify-content:center;align-items:center}.action-btn{border:0;border-radius:50%;width:35px;height:35px;color:#f7f2e6;font:bold 10px 'DM Mono';box-shadow:inset 0 2px 2px #ffffff55,0 2px #65675f,0 4px #aaa99f;cursor:pointer;text-shadow:0 1px #3338;transition:transform .08s}.action-btn:active{transform:translateY(3px);box-shadow:inset 0 2px 2px #ffffff55,0 1px #65675f}.a{background:#ef7463}.b{background:#e8bb5f;color:#392e1e}.x{background:#75b5a3}.y{background:#7f9ec4}.up{grid-column:2;grid-row:1}.left{grid-column:1;grid-row:2}.a{grid-column:3;grid-row:2}.down{grid-column:2;grid-row:3}.x{grid-column:2;grid-row:1;transform:translateY(-42px)}.b{grid-column:2;grid-row:3;transform:translateY(42px)}.right-cluster{position:relative}.abxy{display:grid;grid-template-columns:repeat(3,35px);grid-template-rows:repeat(3,35px);gap:2px;justify-content:center;align-items:center}.abxy .y{grid-column:2;grid-row:1}.abxy .x{grid-column:1;grid-row:2;transform:none}.abxy .a{grid-column:3;grid-row:2}.abxy .b{grid-column:2;grid-row:3;transform:none}.action-label{text-align:center;color:#777a73;font-size:8px;text-transform:uppercase;letter-spacing:.1em;margin-top:4px}.shell-foot{display:flex;justify-content:space-between;align-items:center;margin:15px 6px 0;color:#7e8178;font-size:8px;letter-spacing:.1em;text-transform:uppercase}.volume{display:flex;gap:3px;align-items:center}.vol-line{height:3px;width:34px;background:#9a9b91;border-radius:4px}.led{width:6px;height:6px;border-radius:50%;background:#e6ad58;box-shadow:0 0 6px #e6ad5877;margin-right:6px}.help{margin:12px auto 0;text-align:center;color:#b9c9b9;font-size:10px;line-height:1.8}.help b{color:#e1efc9;font-weight:500}.mobile-controls{display:none}
+@media(max-width:700px){body{padding:10px 8px 28px}.mast{margin:0 3px 9px;font-size:8px}.brand strong{font-size:9px}.console{padding:12px 12px 16px;border-radius:22px}.top-bezel{padding:8px 8px 12px;border-radius:14px}.bezel-row{height:16px;font-size:7px}.hinge{margin:0 -12px 10px;height:7px}.lower{grid-template-columns:1fr;gap:9px}.pad-side,.right-cluster{display:none}.touch-bezel{padding:7px;border-radius:10px}.touch-screen{min-height:170px;padding:10px}.touch-body{font-size:9px;min-height:54px}.touch-title{font-size:8px}.touch-actions{margin-top:7px}.shell-foot{margin-top:10px}.mobile-controls{display:flex;justify-content:space-between;align-items:center;padding:11px 20px 2px}.mobile-dpad{display:grid;grid-template-columns:36px 36px 36px;grid-template-rows:36px 36px 36px;gap:2px}.mobile-dpad button{grid-row:2}.mobile-dpad button:first-child{grid-column:2;grid-row:1}.mobile-dpad button:last-child{grid-column:2;grid-row:3}.mobile-dpad .ml{grid-column:1}.mobile-dpad .mr{grid-column:3}.mobile-dpad .action-btn{width:34px;height:34px;background:#68736b}.mobile-ab{display:flex;gap:10px}.mobile-ab .action-btn{width:42px;height:42px;transform:none}.hint{font-size:7px}.case-pill,.clock-pill{font-size:7px;padding:5px}.toast{font-size:9px;top:37px}.help{font-size:9px}}
+@media(max-width:370px){.touch-screen{min-height:184px}.touch-body{font-size:8px}.clue{font-size:7px}.console{padding:10px}.top-bezel{padding:7px 6px 10px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="mast"><div class="brand"><div class="brand-mark">🦆</div><strong>POCKET NOIR</strong></div><div class="online"><span class="dot"></span> SAVE DATA · LOCAL</div></header>
+  <section class="console" aria-label="Pocket Noir handheld game console">
+    <div class="top-bezel"><div class="bezel-row"><i class="camera"></i> DUCKTECTIVE · CASE 07 <span class="speaker">••••••</span></div>
+      <div class="game-frame"><canvas id="game" width="480" height="270" aria-label="Pixel art town map"></canvas>
+        <div class="screen-overlay"><div class="hud-top"><div class="case-pill"><b>CASE 07</b> / MOONBERRY MYSTERY</div><div class="clock-pill" id="clock">DAY 01 · 08:00</div></div><div class="toast" id="toast"></div><div class="world-label" id="location">FEATHERSTONE · TOWN SQUARE</div><div class="hint" id="hint">↑ ↓ ← → MOVE &nbsp;·&nbsp; E INVESTIGATE</div></div>
+      </div>
+    </div>
+    <div class="branding"><span>◆</span> stereo pixel display <span>—</span> 3d off <span>◆</span></div>
+    <div class="hinge"></div>
+    <div class="lower">
+      <div class="pad-side"><div class="stick" aria-hidden="true"></div><div class="select-row"><button class="tiny-btn" id="journalBtn">JOURNAL</button><button class="tiny-btn" id="mapBtn">MAP</button></div></div>
+      <div class="touch-bezel"><div class="touch-screen"><div class="touch-content" id="touch"></div></div></div>
+      <div class="right-cluster"><div class="abxy"><button class="action-btn y" data-act="interact" aria-label="Investigate">Y</button><button class="action-btn x" data-act="journal" aria-label="Journal">X</button><button class="action-btn a" data-act="interact" aria-label="Action">A</button><button class="action-btn b" data-act="back" aria-label="Back">B</button></div><div class="action-label">inspect · act</div></div>
+    </div>
+    <div class="mobile-controls"><div class="mobile-dpad"><button class="action-btn" data-dir="up">▲</button><button class="action-btn ml" data-dir="left">◀</button><button class="action-btn mr" data-dir="right">▶</button><button class="action-btn" data-dir="down">▼</button></div><div class="mobile-ab"><button class="action-btn x" data-act="journal">X</button><button class="action-btn a" data-act="interact">A</button></div></div>
+    <div class="shell-foot"><span><i class="led"></i> power</span><span class="volume"><span>VOL</span><i class="vol-line"></i></span><span>© 2025 LITTLE QUACK STUDIO</span></div>
+  </section>
+  <div class="help"><b>HOW TO PLAY</b> &nbsp; Move with <b>WASD / arrows</b> or the D-pad · <b>E / A</b> to inspect · <b>X</b> for your journal<br>Find the three clues, question the neighbors, then make your accusation.</div>
+</main>
+<script>
+(()=>{
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');ctx.imageSmoothingEnabled=false;
+const ui=document.getElementById('touch'), toastEl=document.getElementById('toast'), hintEl=document.getElementById('hint'), locEl=document.getElementById('location');
+const TILE=24, W=32,H=24;
+const player={x:390,y:300,dir:'down',walk:0};
+let mode='intro', dialogueIndex=0, toastTimer=0, lastTime=0, journalOpen=false, now=0;
+const clues={tracks:false,thread:false,berry:false};
+const talked={mina:false,pip:false,rook:false};
+const objects=[
+ {id:'bakery',x:170,y:95,w:74,h:62,type:'building',name:'MABEL’S BAKERY',label:'Mabel’s bakery',color:'#d7825b'},
+ {id:'tracks',x:274,y:191,w:36,h:28,type:'clue',name:'TINY PAWPRINTS',clue:'tracks'},
+ {id:'thread',x:402,y:352,w:32,h:28,type:'clue',name:'SILVER THREAD',clue:'thread'},
+ {id:'berry',x:520,y:146,w:32,h:28,type:'clue',name:'BERRY SMUDGE',clue:'berry'},
+ {id:'mina',x:197,y:234,w:24,h:30,type:'npc',name:'MINA THE CAT',color:'#e99583'},
+ {id:'pip',x:519,y:277,w:24,h:30,type:'npc',name:'PIP THE RACCOON',color:'#a9a798'},
+ {id:'rook',x:314,y:382,w:24,h:30,type:'npc',name:'ROOK THE CROW',color:'#505e62'},
+ {id:'fountain',x:492,y:97,w:68,h:58,type:'fountain',name:'OLD FOUNTAIN'},
+ {id:'pier',x:598,y:315,w:78,h:54,type:'pier',name:'DUCK POND'},
+ {id:'notice',x:358,y:90,w:30,h:36,type:'notice',name:'TOWN NOTICEBOARD'},
+ {id:'lily',x:625,y:183,w:32,h:25,type:'scenery',name:'LILY POND'}
+];
+const dialogue={
+ intro:[['NARRATOR','Featherstone is still yawning when the alarm rings. Mabel’s famous Moonberry Tart has vanished!'],['DETECTIVE','No crumbs get past Detective Waddles. I’ll find the tart before the Moonlight Festival tonight.'],['NARRATOR','Search the square for clues. Talk to everyone. Tap A or press E near something to inspect it.']],
+ bakery:[['MABEL','Oh, thank goodness, Detective! The tart was here at closing. The back door was left ajar…'],['DETECTIVE','Nobody leaves town until I’ve had a word. Especially whoever smells like berries.']],
+ tracks:[['DETECTIVE','Tiny pawprints in the flour! Too small for Mabel… and they lead toward the fountain.'],['NARRATOR','CLUE FOUND · SMALL PAWPRINTS. Add it to your case notes.']],
+ thread:[['DETECTIVE','A glint in the fence: silver thread, snagged on a splinter. Someone’s scarf is missing a piece.'],['NARRATOR','CLUE FOUND · SILVER THREAD. That’s not a feather…']],
+ berry:[['DETECTIVE','Berry juice on the fountain rim. Fresh, and dripping toward the pond path.'],['NARRATOR','CLUE FOUND · BERRY SMUDGE. The thief had sticky hands.']],
+ mina:[['MINA','I was at the bakery, yes—but only buying a bun! I saw Pip sneaking behind the fountain.'],['DETECTIVE','Did you notice anything unusual?'],['MINA','A silver scarf. Pip’s been wearing one all week.']],
+ pip:[['PIP','Me? Steal a tart? I was nowhere near the bakery. I just… really like moonberries.'],['DETECTIVE','Funny. There are pawprints in the flour, a berry smudge, and silver thread by the fence.'],['PIP','...My scarf got caught. But I only borrowed one little slice! The whole tart is hidden by the pond.']],
+ rook:[['ROOK','Caw! I saw someone small sneak past the fountain after dark. Had a striped tail.'],['DETECTIVE','Thanks, Rook. That narrows it down.']],
+ fountain:[['NARRATOR','The fountain gurgles. A fresh berry stain marks its stone rim.'],['DETECTIVE','Looks like someone took the pond path. I should search around here.']],
+ pier:[['NARRATOR','The pond is quiet. Something rustles beneath the little dock…'],['DETECTIVE','Aha! The Moonberry Tart! Mostly intact, and definitely missing one slice.']],
+ notice:[['NARRATOR','TONIGHT: MOONLIGHT FESTIVAL · 8 PM · TOWN SQUARE'],['DETECTIVE','We have until sundown to solve this. Better get quacking.']],
+ lily:[['DETECTIVE','A few lily pads and one very judgmental frog. Not a clue.']]
+};
+let lines=[], linePos=0, lineTimer=0, ending=false;
+const clueNames={tracks:'PAWPRINTS',thread:'SILVER THREAD',berry:'BERRY STAIN'};
+function say(key){lines=dialogue[key]||[];linePos=0;mode='dialogue';renderUI();}
+function advance(){if(mode==='dialogue'){linePos++;if(linePos>=lines.length){mode='free';renderUI();}else renderUI();return}if(mode==='ending'){linePos++;if(linePos>=lines.length){for(const k in clues)clues[k]=false;for(const k in talked)talked[k]=false;player.x=390;player.y=300;mode='intro';say('intro');}else renderUI();return}if(mode==='accuse')return}
+function showToast(t){toastEl.textContent=t;toastEl.classList.add('show');toastTimer=2.2}
+function cluesFound(){return Object.values(clues).filter(Boolean).length}
+function nearObj(){let best=null,dist=Infinity;for(const o of objects){if(o.type==='scenery')continue;const d=Math.hypot(player.x-(o.x+o.w/2),player.y-(o.y+o.h/2));if(d<dist){dist=d;best=o}}return dist<47?best:null}
+function interact(){if(mode==='dialogue'){advance();return}if(mode==='accuse'||mode==='ending'){return}const o=nearObj();if(!o){showToast('Nothing but fresh air and suspicious ducks.');return}if(o.type==='clue'){if(!clues[o.clue]){clues[o.clue]=true;say(o.clue)}else showToast('Already logged that clue. Stay sharp, Detective.');return}if(o.type==='npc'){if(o.id==='pip'&&cluesFound()<2){say('pip');talked.pip=true;return}talked[o.id]=true;say(o.id);return}say(o.id)}
+function openAccuse(){if(mode==='dialogue'){advance();return}mode='accuse';renderUI()}
+function chooseSuspect(id){if(id==='pip'&&cluesFound()>=2){mode='ending';ending=true;say('pip');lines=[['DETECTIVE','Pip, it’s over. Your pawprints, berry stain, and missing scarf thread put you at the scene.'],['PIP','Okay, okay! I only wanted one slice to share with my little cousins. I’m sorry, Mabel.'],['MABEL','You could’ve just asked, Pip. Come on—let’s bring the rest to the festival!'],['NARRATOR','CASE CLOSED · THE MOONBERRY MYSTERY'],['DETECTIVE','Another mystery solved, another beak kept clean. Featherstone is safe… for tonight.']];mode='ending';linePos=0;renderUI();return}if(id==='pip'){showToast('You need at least two clues to make a case.');return}showToast('Not enough evidence. Keep investigating.');}
+function renderUI(){
+ const count=cluesFound();let html='';
+ if(mode==='intro'){
+ html=`<div class="touch-head"><div><div class="touch-kicker">NEW CASE · FEATHERSTONE</div><div class="touch-title">THE MOONBERRY<br>MYSTERY</div></div><div style="font-size:25px">🕵️‍♂️</div></div><div class="touch-body"><div class="objective"><span class="badge">!</span><span>Mabel’s festival tart is missing. Search the square, gather <b>3 clues</b>, and question the neighbors.</span></div></div><div class="touch-actions"><button class="touch-action" onclick="window.startCase()">START CASE ▶</button></div><div class="touch-footer"><span>NEW JOURNAL ENTRY</span><span>WADDLES · LV 01</span></div>`;
+ } else if(mode==='dialogue'){
+ const [who,text]=lines[linePos]||['',''];let icon=who==='DETECTIVE'?'🦆':who==='MINA'?'🐈':who==='PIP'?'🦝':who==='ROOK'?'🐦‍⬛':who==='MABEL'?'🐑':'📜';
+ html=`<div class="touch-head"><div><div class="touch-kicker">${who==='DETECTIVE'?'DETECTIVE WADDLES':who==='NARRATOR'?'CASE FILE · ENTRY':who}</div><div class="touch-title">${who==='NARRATOR'?'FIELD NOTES':'TALKING'}</div></div><div style="font-size:25px">${icon}</div></div><div class="touch-body">${text}</div><div class="touch-actions"><button class="touch-action" onclick="window.advanceText()">${linePos===lines.length-1?'CLOSE':'NEXT'} ▶</button>${who==='NARRATOR'&&text.includes('vanished')?'<button class="touch-action alt" onclick="window.startCase()">LET’S GO</button>':''}</div><div class="touch-footer"><span>LOG ${String(linePos+1).padStart(2,'0')} / ${String(lines.length).padStart(2,'0')}</span><span>PRESS A / E</span></div>`;
+ } else if(mode==='accuse'){
+ html=`<div class="touch-head"><div><div class="touch-kicker">CASE BOARD · ${count}/3 CLUES</div><div class="touch-title">WHO TOOK THE TART?</div></div><div style="font-size:24px">🔎</div></div><div class="touch-body">${count>=2?'The evidence points to someone. Tap a suspect to make your accusation.':'Not enough evidence yet. Find at least two clues before accusing.'}<div class="clues">${Object.entries(clues).map(([k,v])=>`<span class="clue ${v?'':'empty'}">${v?'✓':'○'} ${clueNames[k]}</span>`).join('')}</div></div><div class="touch-actions"><button class="touch-action" onclick="window.chooseSuspect('mina')">🐈 MINA</button><button class="touch-action" onclick="window.chooseSuspect('pip')">🦝 PIP</button><button class="touch-action" onclick="window.chooseSuspect('rook')">🐦 ROOK</button><button class="touch-action alt" onclick="window.backToGame()">BACK</button></div><div class="touch-footer"><span>MAKE YOUR CALL, DETECTIVE</span><span>LV 01</span></div>`;
+ } else if(mode==='ending'){
+ const [who,text]=lines[linePos]||['',''];let icon=who==='PIP'?'🦝':who==='MABEL'?'🐑':'🦆';
+ html=`<div class="touch-head"><div><div class="touch-kicker">${who==='NARRATOR'?'CASE COMPLETE':'FEATHERSTONE · 8 PM'}</div><div class="touch-title">${who==='NARRATOR'?'CASE CLOSED!':'THE LAST PIECE'}</div></div><div style="font-size:25px">${icon}</div></div><div class="touch-body">${text}</div><div class="touch-actions"><button class="touch-action" onclick="window.advanceText()">${linePos===lines.length-1?'PLAY AGAIN ↻':'NEXT ▶'}</button></div><div class="touch-footer"><span>★ CASE 07 SOLVED ★</span><span>WADDLES · LV 02</span></div>`;
+ } else {
+ let objective=count<3?`Find the remaining ${3-count} ${3-count===1?'clue':'clues'} around town, then question the neighbors.`:talked.pip?'Pip’s confession is close. Use the case board and make your accusation!':'All clues collected! Question the neighbors, then name the thief.';
+ html=`<div class="touch-head"><div><div class="touch-kicker">FIELD JOURNAL · CASE 07</div><div class="touch-title">MOONBERRY<br>MYSTERY</div></div><div style="font-size:24px">📓</div></div><div class="touch-body"><div class="objective"><span class="badge">${count}/3</span><span>${objective}</span></div><div class="clues">${Object.entries(clues).map(([k,v])=>`<span class="clue ${v?'':'empty'}">${v?'✓':'○'} ${clueNames[k]}</span>`).join('')}</div></div><div class="touch-actions"><button class="touch-action" onclick="window.openBoard()">🔍 CASE BOARD</button>${count===3?'<button class="touch-action alt" onclick="window.openBoard()">ACCUSE</button>':''}</div><div class="touch-footer"><span>FEATHERSTONE · DAY 01</span><span>LV 01 · ♥♥♥</span></div>`;
+ }
+ ui.innerHTML=html;
+}
+window.startCase=()=>{mode='free';renderUI();showToast('Case 07 is open. Find the clues!')};window.advanceText=advance;window.chooseSuspect=chooseSuspect;window.backToGame=()=>{mode='free';renderUI()};window.openBoard=openAccuse;
+function openJournal(){if(mode==='intro')return; if(mode==='dialogue'){advance();return}journalOpen=!journalOpen;mode=journalOpen?'journal':'free';renderUI()}
+window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k))e.preventDefault();if(k==='e'||k===' '||k==='enter'){if(mode==='intro')window.startCase();else interact();return}if(k==='x'||k==='j'){openJournal();return}if(k==='escape'||k==='backspace'){if(mode==='accuse')window.backToGame();return}if(mode!=='free')return;let dx=0,dy=0;if(k==='arrowup'||k==='w')dy=-1;if(k==='arrowdown'||k==='s')dy=1;if(k==='arrowleft'||k==='a')dx=-1;if(k==='arrowright'||k==='d')dx=1;if(dx||dy)move(dx,dy)});
+document.querySelectorAll('[data-dir]').forEach(b=>{let dx=b.dataset.dir==='left'?-1:b.dataset.dir==='right'?1:0,dy=b.dataset.dir==='up'?-1:b.dataset.dir==='down'?1:0;let interval;b.addEventListener('pointerdown',e=>{e.preventDefault();move(dx,dy);interval=setInterval(()=>move(dx,dy),100)});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>clearInterval(interval)))});
+document.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>{let a=b.dataset.act;if(a==='interact'){if(mode==='intro')window.startCase();else interact()}if(a==='journal')openJournal();if(a==='back'&&mode==='accuse')window.backToGame()}));
+document.getElementById('journalBtn').onclick=openJournal;document.getElementById('mapBtn').onclick=()=>showToast('Town map: Bakery NW · Fountain NE · Pond SE');
+function move(dx,dy){if(mode==='intro'){window.startCase();return}if(mode!=='free')return;player.x=Math.max(22,Math.min(W*TILE-22,player.x+dx*3.1));player.y=Math.max(35,Math.min(H*TILE-28,player.y+dy*3.1));player.dir=dx<0?'left':dx>0?'right':dy<0?'up':'down';player.walk+=.4;}
+let cam={x:0,y:0};
+function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),w,h)}
+function seeded(a,b){return (Math.sin(a*127.1+b*311.7)*43758.5453)%1}
+function drawDuck(x,y,s=1){ctx.save();ctx.translate(Math.round(x),Math.round(y));ctx.scale(s,s);let bob=Math.sin(player.walk)*1.3;
+ // shadow
+ rect(-9,8,19,4,'#254a40');
+ // body and tail
+ rect(-7,-8,15,14,'#f5d477');rect(-10,-4,4,8,'#f5d477');rect(-8,-10,5,4,'#ffe99a');
+ // head
+ rect(-5,-16,11,10,'#ffe08a');rect(-7,-14,3,7,'#f5d477');
+ // detective cap
+ rect(-7,-18,14,4,'#394e54');rect(-4,-21,10,4,'#506a68');rect(3,-18,5,2,'#b8d28a');
+ // eye and beak based on direction
+ rect(2,-14,2,2,'#253c3c');rect(6,-11,6,3,'#ec895d');rect(6,-10,5,2,'#f3a268');
+ // coat
+ rect(-7,-4,14,7,'#557d70');rect(-3,-4,3,7,'#e1c57b');rect(-9,1,18,3,'#344e49');
+ // feet
+ rect(-6,7,5,2,'#df8055');rect(2,7,5,2,'#df8055');
+ // briefcase
+ rect(-13,-1,4,6,'#936446');rect(-12,-3,3,2,'#c79855');
+ ctx.restore();}
+function drawNpc(o){let x=o.x,y=o.y;let colors=o.id==='mina'?['#e99483','#f2c0a3']:o.id==='pip'?['#858a84','#c1a477']:['#34454c','#77868a'];rect(x+3,y+22,18,4,'#285047');rect(x+4,y+11,16,14,o.color);rect(x+5,y+3,14,12,colors[0]);if(o.id==='mina'){rect(x+4,y,4,7,colors[0]);rect(x+16,y,4,7,colors[0]);rect(x+8,y+7,2,2,'#293c3b');rect(x+16,y+7,2,2,'#293c3b');rect(x+11,y+10,4,2,'#df8a86')}else if(o.id==='pip'){rect(x+4,y+3,5,5,'#505856');rect(x+15,y+3,5,5,'#505856');rect(x+7,y+8,12,5,'#ddd7c1');rect(x+8,y+8,2,2,'#263535');rect(x+15,y+8,2,2,'#263535');rect(x+9,y+15,12,5,'#b9b19c')}else{rect(x+7,y+0,11,5,'#34454c');rect(x+9,y+7,2,2,'#e8d885');rect(x+15,y+7,2,2,'#e8d885');rect(x+11,y+10,4,2,'#e8a65d')};rect(x+7,y+24,4,3,'#e28460');rect(x+15,y+24,4,3,'#e28460')}
+function drawBuilding(o){const {x,y,w,h}=o;rect(x-4,y+h-5,w+8,12,'#865d48');rect(x,y+15,w,h-15,'#edc68e');rect(x-7,y+13,w+14,9,'#984d45');rect(x+7,y,w-14,18,'#c96e55');rect(x+14,y+6,w-28,8,'#db8762');rect(x+12,y+27,15,18,'#72938a');rect(x+w-27,y+27,15,18,'#72938a');rect(x+w/2-7,y+h-21,14,21,'#925944');rect(x+w/2-4,y+h-18,3,3,'#f5cf7a');rect(x+w/2-5,y+18,10,7,'#fff0c8');ctx.fillStyle='#455a4f';ctx.font='6px monospace';ctx.textAlign='center';ctx.fillText('MABEL’S',x+w/2,y+24)}
+function drawWorld(){
+ let t=now*.001;cam.x=Math.max(0,Math.min(W*TILE-480,player.x-240));cam.y=Math.max(0,Math.min(H*TILE-270,player.y-135));
+ ctx.save();ctx.translate(-Math.floor(cam.x),-Math.floor(cam.y));
+ // grass base and scattered grass pixels
+ rect(0,0,W*TILE,H*TILE,'#6f9c73');for(let y=0;y<H;y++)for(let x=0;x<W;x++){let v=Math.abs(seeded(x,y));if(v>.2){let px=x*TILE+Math.abs(seeded(x+44,y))*20,py=y*TILE+Math.abs(seeded(x,y+45))*20;rect(px,py,2,2,v>.75?'#84aa79':'#638c6b')}}
+ // cobblestone crossroads
+ rect(0,230,768,86,'#b6ad88');rect(228,0,86,576,'#b6ad88');for(let y=230;y<316;y+=13)for(let x=0;x<768;x+=20){rect(x+(y%26?9:0),y,18,1,'#9b9878')}for(let y=0;y<576;y+=17)for(let x=228;x<314;x+=22)rect(x,y+(x%2?7:0),1,11,'#999778');
+ // pond
+ rect(595,365,160,100,'#4e9a9b');rect(601,371,145,82,'#69b6af');for(let i=0;i<8;i++){let xx=615+(i*29)%130,yy=381+(i*37)%65;rect(xx,yy,14,5,'#92c799');rect(xx+5,yy+1,2,2,'#dcdf97')}
+ // trees & flowerbeds
+ for(const [x,y] of [[74,70],[74,372],[348,168],[453,77],[455,443],[115,465],[682,260],[362,474],[565,465],[40,178]]){rect(x+8,y+17,7,18,'#795a43');rect(x+2,y+4,20,20,'#47765b');rect(x+6,y,14,17,'#568961');rect(x+8,y+4,4,4,'#76a36b')}
+ // fence by pond
+ for(let x=385;x<472;x+=13){rect(x,349,3,30,'#86694d');rect(x-2,355,7,3,'#ac8c63');rect(x-2,371,7,3,'#ac8c63')}
+ drawBuilding(objects[0]);
+ // fountain
+ rect(488,107,74,43,'#667e79');rect(495,104,61,40,'#8bc2b1');rect(502,111,48,30,'#72aaa0');rect(510,119,33,17,'#65a5a0');rect(518,92,16,20,'#b7d1b3');rect(513,88,26,6,'#d3d5a5');rect(524,82,3,11,'#a5c9b3');
+ // noticeboard
+ rect(358,90,5,35,'#825b3f');rect(348,89,26,18,'#a77b51');rect(351,92,20,12,'#f0d99a');rect(354,95,13,2,'#72836a');rect(354,99,10,2,'#72836a');
+ // dock
+ rect(596,312,80,54,'#8b674b');for(let y=316;y<365;y+=9){rect(596,y,80,2,'#bd9461');for(let x=603;x<674;x+=20)rect(x,y+3,2,3,'#694f42')}rect(606,302,5,15,'#806348');rect(657,302,5,15,'#806348');
+ // clue glints
+ for(const o of objects.filter(o=>o.type==='clue')){let x=o.x,y=o.y; if(o.id==='tracks'){for(let i=0;i<3;i++){rect(x+i*8,y+6,3,3,'#604d42');rect(x+i*8+2,y+13,5,4,'#735d4d')}}else if(o.id==='thread'){rect(x+4,y+7,17,2,'#e7e2bb');rect(x+8,y+9,2,8,'#e7e2bb');rect(x+13,y+11,11,2,'#e7e2bb')}else{rect(x+7,y+9,15,7,'#8c4650');rect(x+10,y+6,7,4,'#558159');rect(x+9,y+11,3,2,'#e8b0a0')}}
+ drawNpc(objects[4]);drawNpc(objects[5]);drawNpc(objects[6]);
+ // tiny birds/flowers
+ for(let i=0;i<24;i++){let x=(i*83+21)%760,y=(i*57+29)%560;if((x>220&&x<320)||(y>228&&y<320))continue;rect(x,y,3,3,i%2?'#e7b5a0':'#edda8c')}
+ drawDuck(player.x,player.y);
+ const near=nearObj();if(near){let x=near.x+near.w/2,y=near.y-10;if(near.type==='npc')y=near.y-6;ctx.fillStyle='#fff0b6';ctx.font='bold 14px monospace';ctx.textAlign='center';ctx.fillText('!',x,y+Math.sin(t*5)*2);hintEl.innerHTML='A / E &nbsp;·&nbsp; '+near.name}
+ else hintEl.textContent='↑ ↓ ← → MOVE · E INVESTIGATE';
+ ctx.restore();
+}
+function frame(t){let dt=t-lastTime;lastTime=t;now=t;if(toastTimer>0){toastTimer-=dt/1000;if(toastTimer<=0)toastEl.classList.remove('show')}drawWorld();requestAnimationFrame(frame)}
+function updateClock(){let minutes=Math.floor((Date.now()/60000)%720);let hour=8+Math.floor(minutes/60),min=minutes%60;document.getElementById('clock').textContent=`DAY 01 · ${String(hour).padStart(2,'0')}:${String(min).padStart(2,'0')}`}
+setInterval(updateClock,10000);
+function locate(){let l=player.x<300?'BAKERY LANE':player.x>540?'POND PATH':'TOWN SQUARE';if(player.y<160&&player.x>450)l='FOUNTAIN WALK';if(player.y>340&&player.x>570)l='DUCK POND';locEl.textContent='FEATHERSTONE · '+l}
+setInterval(locate,150);
+renderUI();say('intro');requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
