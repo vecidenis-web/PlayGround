@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090b18">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%2351e6ff' d='M8 5h49L47 48 11 60z'/%3E%3Ctext x='17' y='44' font-family='sans-serif' font-size='40' font-weight='900' font-style='italic' fill='%23090b18'%3ER%3C/text%3E%3C/svg%3E">
+  <title>RIFT RUMBLE — Sonic vs Shadow</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Rift Rumble home"><span class="brand-mark">R</span><span>RIFT<span class="brand-light">RUMBLE</span></span></a>
+      <div class="top-note"><span class="live-dot"></span> ARCADE MODE <i>•</i> PLAYER VS CPU</div>
+      <button class="sound-button" id="soundButton" aria-label="Toggle sound" title="Toggle sound">♫ <span>SOUND ON</span></button>
+    </header>
+
+    <section class="game-layout" aria-label="Rift Rumble game">
+      <div class="game-column">
+        <section class="arena-wrap" id="arenaWrap">
+          <canvas id="game" width="960" height="540" aria-label="Sonic and Shadow fighting game"></canvas>
+          <div class="game-intro" id="intro">
+            <div class="intro-eyebrow"><span></span> THE ULTIMATE SPEED SHOWDOWN</div>
+            <h1>RIFT<br><em>RUMBLE</em></h1>
+            <p class="intro-copy">Two rivals. One arena. <b>All-out speed.</b></p>
+            <div class="select-label">CHOOSE YOUR FIGHTER</div>
+            <div class="fighter-select" role="group" aria-label="Choose fighter">
+              <button class="fighter-card selected" data-fighter="sonic" aria-pressed="true">
+                <span class="card-sprite sonic-sprite" aria-hidden="true"></span><span class="fighter-info"><b>SONIC</b><small>THE BLUE BLUR</small></span><span class="pick-check">✓</span>
+              </button>
+              <button class="fighter-card" data-fighter="shadow" aria-pressed="false">
+                <span class="card-sprite shadow-sprite" aria-hidden="true"></span><span class="fighter-info"><b>SHADOW</b><small>THE ULTIMATE LIFEFORM</small></span><span class="pick-check">✓</span>
+              </button>
+            </div>
+            <button class="play-button" id="playButton"><span>ENTER THE ARENA</span><b>→</b></button>
+            <div class="intro-foot"><span>BEST OF ONE</span><span>·</span><span>NO RINGS ON THE LINE</span></div>
+          </div>
+          <div class="battle-hud" id="hud" aria-hidden="true">
+            <div class="fighter-hud player-hud">
+              <div class="hud-name"><span class="hud-icon" id="playerIcon">S</span><span><b id="playerName">SONIC</b><small>PLAYER 1</small></span></div>
+              <div class="health-track"><div id="playerHealth" class="health-fill"></div></div>
+              <div class="meter-row"><span>CHAOS METER</span><div class="meter-track"><div id="playerMeter" class="meter-fill"></div></div><b id="playerMeterText">0%</b></div>
+            </div>
+            <div class="round-clock"><small>RIFT ARENA</small><strong id="clock">99</strong><span>ROUND 01</span></div>
+            <div class="fighter-hud cpu-hud">
+              <div class="hud-name"><span><b id="cpuName">SHADOW</b><small>CPU RIVAL</small></span><span class="hud-icon shadow-icon" id="cpuIcon">S</span></div>
+              <div class="health-track"><div id="cpuHealth" class="health-fill"></div></div>
+              <div class="meter-row"><span>CHAOS METER</span><div class="meter-track"><div id="cpuMeter" class="meter-fill"></div></div><b id="cpuMeterText">0%</b></div>
+            </div>
+          </div>
+          <div class="round-overlay" id="roundOverlay" aria-live="polite"><div class="round-stamp" id="roundStamp">ROUND 1</div><div class="round-message" id="roundMessage">FIGHT!</div><button id="rematchButton">RUN IT BACK <span>↻</span></button></div>
+          <div class="transform-flash" id="transformFlash">CHAOS<br>CONTROL</div>
+        </section>
+        <div class="below-arena">
+          <div class="status-line"><span class="status-dot"></span><span id="statusText">PICK YOUR SIDE AND GET READY</span></div>
+          <button class="reset-link" id="resetButton">↺ <span>BACK TO SELECT</span></button>
+        </div>
+      </div>
+
+      <aside class="side-panel">
+        <div class="panel-kicker">HOW TO PLAY <span>01 / 01</span></div>
+        <h2>Make some<br><em>mayhem.</em></h2>
+        <p class="panel-copy">Outpace your rival, land your hits, and unleash a powered-up form to take the round.</p>
+        <div class="move-list">
+          <div class="move-row"><span class="keycap">←</span><span class="keycap">→</span><span class="move-name">MOVE</span><small>RUN THE ARENA</small></div>
+          <div class="move-row"><span class="keycap">↑</span><span class="move-name">JUMP</span><small>DODGE &amp; CLOSE IN</small></div>
+          <div class="move-row"><span class="keycap key-wide">J</span><span class="move-name">SPIN ATTACK</span><small>QUICK STRIKE</small></div>
+          <div class="move-row"><span class="keycap key-wide">K</span><span class="move-name">BOOST DASH</span><small>HEAVY HIT · COOLDOWN</small></div>
+          <div class="move-row"><span class="keycap key-wide">L</span><span class="move-name">TRANSFORM</span><small>FULL METER REQUIRED</small></div>
+        </div>
+        <div class="panel-tip"><span class="tip-icon">✦</span><p><b>Build your Chaos Meter</b><br>Land attacks to charge up. A transformation makes every move hit harder.</p></div>
+        <div class="side-footer"><span>PIXEL ART. RIVALRY. RESOLVED.</span><span>© RIFT RUMBLE</span></div>
+      </aside>
+    </section>
+
+    <section class="touch-controls" aria-label="Touch controls">
+      <div class="touch-group"><button class="touch-btn move-touch" data-action="left" aria-label="Move left">◀</button><button class="touch-btn move-touch" data-action="right" aria-label="Move right">▶</button><button class="touch-btn" data-action="jump" aria-label="Jump">↑</button></div>
+      <div class="touch-group touch-attacks"><button class="touch-btn attack-touch" data-action="attack">SPIN</button><button class="touch-btn boost-touch" data-action="boost">BOOST</button><button class="touch-btn transform-touch" data-action="transform">CHAOS</button></div>
+    </section>
+    <footer class="page-footer"><span>BUILT FOR THE LOVE OF THE RIVALRY</span><span>SONIC <i>×</i> SHADOW <i>×</i> RIFT ARENA</span></footer>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
