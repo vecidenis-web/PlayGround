@@ -68,33 +68,57 @@
 
   function bg(){
     const sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#172347');sky.addColorStop(.52,'#392c63');sky.addColorStop(1,'#14152c');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
-    // distant moon and pixel stars
+    // Twinkling pixel stars and a softly pulsing moon
+    const moonGlow=.12+Math.sin(ambient*1.7)*.035;ctx.globalAlpha=moonGlow;ctx.fillStyle='#ffe9a1';ctx.fillRect(721,43,48,48);ctx.globalAlpha=1;
     ctx.fillStyle='#ffe9a1';ctx.fillRect(738,65,5,5);ctx.fillRect(743,61,5,5);ctx.fillRect(748,65,5,5);ctx.fillRect(743,70,5,5);ctx.fillStyle='#fff5cf';ctx.fillRect(743,65,5,5);
-    for(let i=0;i<34;i++){const x=(i*173+31)%W,y=(i*67+25)%210;ctx.fillStyle=i%3?'#aab9ea66':'#e8cfffaa';ctx.fillRect(x,y,(i%7===0?3:2),(i%7===0?3:2))}
-    // stylized night city, each block is crisp pixels
+    for(let i=0;i<48;i++){const x=(i*173+31)%W,y=(i*67+25)%210,pulse=.45+.45*Math.sin(ambient*(1.3+i%4)+i);ctx.globalAlpha=pulse;ctx.fillStyle=i%3?'#aab9ea':'#e8cfff';ctx.fillRect(x,y,(i%7===0?3:2),(i%7===0?3:2))}ctx.globalAlpha=1;
+    // Layered city silhouettes give the arena a stronger sense of depth.
     ctx.fillStyle='#22264a';ctx.beginPath();ctx.moveTo(0,315);for(let x=0;x<=W;x+=64){ctx.lineTo(x,290+Math.sin(x*.025)*23);ctx.lineTo(x+32,322+Math.sin((x+32)*.02)*18)}ctx.lineTo(W,420);ctx.lineTo(0,420);ctx.fill();
     for(let i=0;i<15;i++){const x=i*71-12,h=75+(i*43)%116,y=388-h,w=41+(i%3)*8;ctx.fillStyle=i%2?'#242444':'#28264b';ctx.fillRect(x,y,w,h);ctx.fillStyle='#42406b';ctx.fillRect(x+4,y+6,w-8,3);for(let r=0;r<Math.floor(h/20);r++)for(let c=0;c<3;c++){ctx.fillStyle=(i+r+c)%4===0?'#ffd78888':'#64c3ff55';ctx.fillRect(x+7+c*11,y+17+r*19,4,6)}}
-    // glowing rift
-    ctx.globalAlpha=.6;ctx.fillStyle='#ed5caa';ctx.fillRect(468,164,5,172);ctx.fillRect(460,178,4,141);ctx.fillStyle='#4ce8ff';ctx.fillRect(480,188,4,140);ctx.globalAlpha=1;
-    // low horizon haze and distant track
+    // The rift flickers in stepped pixel bands rather than a smooth gradient.
+    const riftShift=Math.round(Math.sin(ambient*8)*3);ctx.globalAlpha=.32+Math.sin(ambient*7)*.08;ctx.fillStyle='#ed5caa';ctx.fillRect(468+riftShift,164,5,172);ctx.fillRect(460-riftShift,178,4,141);ctx.fillStyle='#4ce8ff';ctx.fillRect(480,188-riftShift,4,140);ctx.globalAlpha=1;
     ctx.fillStyle='#ff74be18';ctx.fillRect(0,346,W,46);ctx.fillStyle='#e2b9ff';ctx.fillRect(0,386,W,2);
-    // stage platform and checker floor
+    // Checkerboard stage with scrolling light tiles and a layered neon rim.
     ctx.fillStyle='#11142a';ctx.fillRect(0,390,W,150);ctx.fillStyle='#383250';ctx.fillRect(0,390,W,5);ctx.fillStyle='#ff72bd';ctx.fillRect(0,390,W,2);ctx.fillStyle='#54def4';ctx.fillRect(0,395,W,2);
     for(let row=0;row<8;row++){for(let col=0;col<24;col++){if((row+col)%2===0){ctx.fillStyle=row<3?'#22243c':'#1b1d34';ctx.fillRect(col*44+(row%2)*22,402+row*18,44,18)}}}
+    const scanX=(ambient*90)%W;ctx.globalAlpha=.12;ctx.fillStyle='#7ef3ff';ctx.fillRect(scanX,398,28,5);ctx.fillRect((scanX+W/2)%W,398,14,5);ctx.globalAlpha=1;
     ctx.fillStyle='#464061';ctx.fillRect(0,FLOOR,W,3);ctx.fillStyle='#8c678e';ctx.fillRect(0,FLOOR+3,W,2);
+    ctx.fillStyle='#ff6dba';ctx.fillRect(0,FLOOR+5,W,1);ctx.fillStyle='#15182d';ctx.fillRect(0,FLOOR+6,W,H-FLOOR-6);
   }
   function drawFighter(f){
-    const p=palettes[f.kind],map=spriteMaps[f.kind];const bob=f.y>=FLOOR-1?Math.sin(f.walk)*2:0;
+    const p=palettes[f.kind],map=spriteMaps[f.kind];
+    const grounded=f.y>=FLOOR-1,phase=f.walk, bob=grounded?Math.abs(Math.sin(phase))*2:0;
+    const runningFast=grounded&&Math.abs(f.vx)>90, step=runningFast?Math.round(Math.sin(phase)*2):0;
     ctx.save();ctx.translate(Math.round(f.x),Math.round(f.y+bob));ctx.scale(f.face,1);
+    // Hard-edged contact shadow and pixel stepping make the sprite feel anchored.
     ctx.globalAlpha=Math.max(.12,.32-(FLOOR-f.y)/180);ctx.fillStyle='#070817';ctx.beginPath();ctx.ellipse(0,1,39,7,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
-    if(f.transformed>0){ctx.strokeStyle=p.aura;ctx.globalAlpha=.48+Math.sin(ambient*18)*.2;ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,-38,43,48,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=.15;ctx.fillStyle=p.aura;ctx.beginPath();ctx.ellipse(0,-38,37,44,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1}
-    if(f.attack>0&&f.attackKind==='spin'){ctx.globalAlpha=.7;ctx.strokeStyle=p.aura;ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(0,-38,43,30,Math.sin(ambient*24)*.3,Math.PI*.08,Math.PI*1.72);ctx.stroke();ctx.globalAlpha=1}
-    if(f.attack>0&&f.attackKind==='boost'){ctx.globalAlpha=.35;ctx.fillStyle=p.aura;ctx.fillRect(-75,-55,65,6);ctx.fillRect(-60,-43,47,3);ctx.globalAlpha=1}
+    if(f.transformed>0){ctx.strokeStyle=p.aura;ctx.globalAlpha=.48+Math.sin(ambient*18)*.2;ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,-38,43+Math.sin(ambient*12)*2,48,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=.11;ctx.fillStyle=p.aura;ctx.beginPath();ctx.ellipse(0,-38,37,44,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;for(let i=0;i<6;i++){const a=ambient*3+i*Math.PI/3,px=Math.round(Math.cos(a)*49),py=Math.round(-38+Math.sin(a)*48);ctx.globalAlpha=.65+.3*Math.sin(ambient*10+i);ctx.fillStyle=i%2?'#fff5a8':p.aura;ctx.fillRect(px,py,i%3===0?4:3,i%3===0?4:3)}ctx.globalAlpha=1}
+    if(f.attack>0&&f.attackKind==='spin'){
+      const spin=ambient*34;ctx.globalAlpha=.55;ctx.strokeStyle=p.aura;ctx.lineWidth=5;ctx.beginPath();ctx.ellipse(0,-38,43,29,Math.sin(spin)*.45,spin%6.28,spin%6.28+Math.PI*1.35);ctx.stroke();ctx.globalAlpha=.3;ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,-38,34,21,-Math.sin(spin)*.4,(spin+2)%6.28,(spin+2)%6.28+Math.PI);ctx.stroke();ctx.globalAlpha=1;
+    }
+    if(f.attack>0&&f.attackKind==='boost'){ctx.globalAlpha=.3;ctx.fillStyle=p.aura;ctx.fillRect(-78,-59,68,5);ctx.fillRect(-65,-47,53,4);ctx.fillRect(-49,-35,35,3);ctx.globalAlpha=1}
+    // Spin attacks roll the whole chunky sprite; boost leans into the dash.
+    const rolling=f.attack>0&&f.attackKind==='spin',dashing=f.attack>0&&f.attackKind==='boost';
+    if(rolling){ctx.translate(0,-38);ctx.rotate(Math.sin(ambient*34)*.42);ctx.translate(0,38)}
+    else if(dashing){ctx.translate(0,-38);ctx.rotate(-.27);ctx.translate(0,38)}
     const colors={B:f.transformed>0?'#ffe75b':p.body,L:p.light,S:p.skin,D:p.dark,R:p.shoe,W:p.trim};
     ctx.translate(-32,-76);
-    for(let y=0;y<map.length;y++)for(let x=0;x<map[y].length;x++){const c=map[y][x];if(colors[c]){ctx.fillStyle=colors[c];ctx.fillRect(x*4,y*4,4,4)}}
-    if(f.kind==='sonic'){ctx.fillStyle=p.pupil;ctx.fillRect(46,32,3,7)}else{ctx.fillStyle=p.eye;ctx.fillRect(46,32,4,6);ctx.fillStyle='#18131d';ctx.fillRect(48,33,2,4)}
-    if(f.transformed>0){ctx.fillStyle='#fff5a8';ctx.fillRect(45,31,5,3)}
+    // One-pixel dark outline around the silhouette improves contrast at game scale.
+    for(let y=0;y<map.length;y++)for(let x=0;x<map[y].length;x++)if(map[y][x]!=='.'){
+      const exposed=map[y-1]?.[x]==='.'||map[y+1]?.[x]==='.'||map[y][x-1]==='.'||map[y][x+1]==='.';
+      if(exposed){ctx.fillStyle='#101426';ctx.fillRect(x*4-1,y*4-1,6,6)}
+    }
+    for(let y=0;y<map.length;y++)for(let x=0;x<map[y].length;x++){
+      const c=map[y][x];if(!colors[c])continue;
+      let px=x*4,py=y*4;
+      // Alternating shoe lift creates a readable two-frame run cycle.
+      if(y>=16&&x<8)py+=step;if(y>=16&&x>=8)py-=step;
+      ctx.fillStyle=colors[c];ctx.fillRect(px,py,4,4);
+    }
+    // Character-specific facial pixels and shiny shoe buckles.
+    if(f.kind==='sonic'){ctx.fillStyle=p.pupil;ctx.fillRect(46,32,3,7);ctx.fillStyle='#fff';ctx.fillRect(46,31,2,2)}else{ctx.fillStyle=p.eye;ctx.fillRect(46,32,4,6);ctx.fillStyle='#18131d';ctx.fillRect(48,33,2,4);ctx.fillStyle='#ff445f';ctx.fillRect(9,17,8,2);ctx.fillRect(20,25,8,2)}
+    ctx.fillStyle='#fff7d1';ctx.fillRect(9,69,7,2);ctx.fillRect(39,69,7,2);
+    if(f.transformed>0){ctx.fillStyle='#fff5a8';ctx.fillRect(45,31,5,3);ctx.fillStyle='#fff4a8';ctx.fillRect(8,5,6,2)}
     if(f.flash>0){ctx.globalCompositeOperation='screen';ctx.globalAlpha=.45;ctx.fillStyle='#fff';ctx.fillRect(0,0,72,78)}
     ctx.restore();
   }
@@ -121,6 +145,7 @@
     else if(f.stun<=0&&f.attackKind!=='boost'){const d=other.x-f.x,ad=Math.abs(d);f.block=ad<105&&other.attack>0&&ambient%2>.9;if(ad>94){f.vx=Math.sign(d)*speed*.76;f.walk+=dt*10}else{f.vx*=Math.pow(.06,dt);if(Math.random()<dt*.92&&f.attack<=0)doAttack(f,Math.random()<.28?'boost':'spin')}if(ad>170&&f.y>=FLOOR-1&&Math.random()<dt*.17)f.vy=-525;}
     if(f.stun>0)f.vx*=Math.pow(.12,dt);if(f.attack>0&&!f.attackHit)hit(f,other,f.attackKind);
     f.x+=f.vx*dt;f.x=Math.max(42,Math.min(W-42,f.x));if(f.y<FLOOR||f.vy<0){f.vy+=1450*dt;f.y+=f.vy*dt;if(f.y>=FLOOR){f.y=FLOOR;f.vy=0}}
+    if(f.y>=FLOOR-1&&Math.abs(f.vx)>180&&Math.random()<dt*12){const dustX=f.x-f.face*20;particles.push({x:dustX,y:FLOOR-5,vx:-f.face*(25+Math.random()*45),vy:-25-Math.random()*35,life:.18+Math.random()*.12,max:.3,color:f.kind==='sonic'?'#86eaff':'#ff829a',size:2+Math.floor(Math.random()*3)})}
     if(f.attackKind!=='boost'||f.attack<=0)f.vx*=Math.pow(.035,dt);
   }
   function update(dt){ambient+=dt;updateEffects(dt);if(!running||paused)return;if(roundDelay>0){roundDelay-=dt;if(roundDelay<=0)$('statusText').textContent='FIGHT! LAND HITS TO CHARGE YOUR CHAOS METER';return}timeLeft=Math.max(0,timeLeft-dt);player.meter=Math.min(100,player.meter+dt*.75);cpu.meter=Math.min(100,cpu.meter+dt*.7);if(cpu.meter>=100&&cpu.transformed<=0&&Math.random()<dt*.7)transform(cpu);updateFighter(player,cpu,dt);if(running)updateFighter(cpu,player,dt);syncHud();if(timeLeft<=0){if(player.health===cpu.health)finish('DRAW');else finish(player.health>cpu.health?selected.toUpperCase():cpu.kind.toUpperCase())}}
